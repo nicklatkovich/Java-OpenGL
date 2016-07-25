@@ -4,6 +4,7 @@ import com.nicklatkovich.renderEngine.DisplayManager;
 import com.nicklatkovich.renderEngine.Loader;
 import com.nicklatkovich.renderEngine.RawModel;
 import com.nicklatkovich.renderEngine.Renderer;
+import com.nicklatkovich.shaders.StaticShader;
 import org.lwjgl.opengl.Display;
 
 public class MainGameLoop {
@@ -12,6 +13,7 @@ public class MainGameLoop {
         DisplayManager.create();
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
+        StaticShader shader = new StaticShader();
         float[] vertices = {
                 -0.5f, 0.5f, 0f,
                 -0.5f, -0.5f, 0f,
@@ -25,9 +27,12 @@ public class MainGameLoop {
         RawModel model = loader.loadToVAO(vertices, indices);
         while (!Display.isCloseRequested()) {
             renderer.prepare();
+            shader.start();
             renderer.render(model);
+            shader.stop();
             DisplayManager.update();
         }
+        shader.cleanUp();
         loader.cleanUP();
         DisplayManager.destroy();
     }
