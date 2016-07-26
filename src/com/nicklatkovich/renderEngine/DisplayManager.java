@@ -10,7 +10,9 @@ public class DisplayManager {
     private static final int FRAME_RATE = 60;
 
     public static void create() {
-        ContextAttribs attribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
+        ContextAttribs attribs = new ContextAttribs(3, 2)
+                .withForwardCompatible(true)
+                .withProfileCore(true);
         try {
             Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
             Display.create(new PixelFormat(), attribs);
