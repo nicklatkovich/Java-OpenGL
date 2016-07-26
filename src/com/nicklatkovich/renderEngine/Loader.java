@@ -1,11 +1,16 @@
 package com.nicklatkovich.renderEngine;
 
+import com.nicklatkovich.models.RawModel;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -15,6 +20,7 @@ public class Loader {
 
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
+    private List<Integer> textures = new ArrayList<>();
 
     public RawModel loadToVAO(float[] positions, int[] indices) {
         int vaoID = createVAO();
@@ -24,12 +30,28 @@ public class Loader {
         return new RawModel(vaoID, indices.length);
     }
 
+    public int loadTexture(String fileName) {
+        Texture texture = null;
+        try {
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert texture != null;
+        int textureID = texture.getTextureID();
+        textures.add(textureID);
+        return textureID;
+    }
+
     public void cleanUP() {
         for (int vao : vaos) {
             GL30.glDeleteVertexArrays(vao);
         }
         for (int vbo : vbos) {
             GL15.glDeleteBuffers(vbo);
+        }
+        for (int texture : textures) {
+            GL11.glDeleteTextures(texture);
         }
     }
 

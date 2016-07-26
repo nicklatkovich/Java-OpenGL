@@ -1,10 +1,12 @@
 package com.nicklatkovich.engineTester;
 
+import com.nicklatkovich.models.TexturedModel;
 import com.nicklatkovich.renderEngine.DisplayManager;
 import com.nicklatkovich.renderEngine.Loader;
-import com.nicklatkovich.renderEngine.RawModel;
+import com.nicklatkovich.models.RawModel;
 import com.nicklatkovich.renderEngine.Renderer;
 import com.nicklatkovich.shaders.StaticShader;
+import com.nicklatkovich.textures.ModelTexture;
 import org.lwjgl.opengl.Display;
 
 public class MainGameLoop {
@@ -25,10 +27,12 @@ public class MainGameLoop {
                 3, 1, 2
         };
         RawModel model = loader.loadToVAO(vertices, indices);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("image"));
+        TexturedModel texturedModel = new TexturedModel(model, texture);
         while (!Display.isCloseRequested()) {
             renderer.prepare();
             shader.start();
-            renderer.render(model);
+            renderer.render(texturedModel);
             shader.stop();
             DisplayManager.update();
         }

@@ -1,4 +1,4 @@
-package com.nicklatkovich.renderEngine;
+package com.nicklatkovich.models;
 
 public class RawModel {
 
